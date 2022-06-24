@@ -81,3 +81,45 @@ The server will respond with one of the two response codes:
 
 
 
+## Example
+
+1. Run docker container:
+```shell
+PS C:\Users\abhib\Downloads\DockerizedSpotServer> docker run -p 8000:8000 spotaut
+Starting httpd...
+Listening to ('0.0.0.0', 8000)
+```
+
+2. Define query in Python file
+```python
+query = {
+    "formula": "Fa",
+    "options": ['buchi', 'state-based']
+}
+```
+
+3. Send the query to the server (Note: IP address is fixed as shown in code)
+```python
+import requests
+import json
+out = requests.post("http://localhost:8000/", json=query)
+```
+
+4. The server responds with automaton represented as JSON
+```json
+{'acceptance': 'Büchi',
+ 'atoms': {'a': 0},
+ 'init_state': 1,
+ 'is_deterministic': True,
+ 'is_inherently_weak': True,
+ 'is_state_based_acc': True,
+ 'is_stutter_invariant': True,
+ 'is_terminal': True,
+ 'is_unambiguous': True,
+ 'is_weak': True,
+ 'name': 'Fa',
+ 'num_sets': 1,
+ 'num_states': 2,
+ 'state2edges': {'0': {'0': ['1', [0]]},
+                 '1': {'0': ['a', []], '1': ['!a', []]}}}
+```
